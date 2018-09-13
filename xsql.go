@@ -48,7 +48,7 @@ func Pretty(rows *sql.Rows) (int, string, error) {
 	columnJustifications := getColumnJustifications(columnTypes)
 	header := getHeader(columnTypes, columnSizes)
 	body := getBody(values, columnSizes, columnJustifications)
-	numRows := len(values))
+	numRows := len(values)
 	footer := getFooter(numRows)
 
 	var results bytes.Buffer
