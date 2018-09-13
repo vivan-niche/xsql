@@ -24,10 +24,10 @@ const (
 )
 
 // Pretty returns a pretty sql string
-func Pretty(rows *sql.Rows) (string, error) {
+func Pretty(rows *sql.Rows) (int, string, error) {
 	columnNames, err := rows.Columns()
 	if err != nil {
-		return empty, err
+		return 0, empty, err
 	}
 
 	if len(columnNames) == 0 {
@@ -36,25 +36,26 @@ func Pretty(rows *sql.Rows) (string, error) {
 
 	columnTypes, err := rows.ColumnTypes()
 	if err != nil {
-		return empty, err
+		return 0, empty, err
 	}
 
 	values, err := getValues(rows)
 	if err != nil {
-		return empty, err
+		return 0, empty, err
 	}
 
 	columnSizes := getColumnSizes(columnNames, values)
 	columnJustifications := getColumnJustifications(columnTypes)
 	header := getHeader(columnTypes, columnSizes)
 	body := getBody(values, columnSizes, columnJustifications)
-	footer := getFooter(len(values))
+	numRows := len(values))
+	footer := getFooter(numRows)
 
 	var results bytes.Buffer
 	results.WriteString(header)
 	results.WriteString(body)
 	results.WriteString(footer)
-	return results.String(), nil
+	return numRows, results.String(), nil
 }
 
 func getValues(rows *sql.Rows) ([][]string, error) {
