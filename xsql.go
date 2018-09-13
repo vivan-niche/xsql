@@ -5,6 +5,7 @@ import (
 	"database/sql"
 	"fmt"
 	"github.com/shomali11/util/xstrings"
+	"github.com/denisenkom/go-mssqldb"
 	"strings"
 )
 
@@ -84,7 +85,13 @@ func getValues(rows *sql.Rows) ([][]string, error) {
 			if data == nil {
 				rowValues[i] = empty
 			} else {
-				rowValues[i] = string(data)
+				if columnTypes[i].DatabaseTypeName() == "UNIQUEIDENTIFIER" {
+					var u mssql.UniqueIdentifier
+					u.Scan(data)
+					rowValues[i] = u.String()
+				} else {
+					rowValues[i] = string(data)
+				}
 			}
 		}
 
