@@ -31,7 +31,7 @@ func Pretty(rows *sql.Rows) (int, string, error) {
 	}
 
 	if len(columnNames) == 0 {
-		return getFooter(0), nil
+		return 0, getFooter(0), nil
 	}
 
 	columnTypes, err := rows.ColumnTypes()
