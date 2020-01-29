@@ -12,7 +12,6 @@ import (
 const (
 	empty               = ""
 	space               = " "
-	plus                = "+"
 	minus               = "-"
 	pipe                = "|"
 	newLine             = "\n"
@@ -152,7 +151,7 @@ func getHeader(columnTypes []*sql.ColumnType, columnSizes []int) string {
 		header.WriteString(minus)
 	}
 	for i := 1; i < len(columnTypes); i++ {
-		header.WriteString(plus)
+		header.WriteString(pipe)
 		for j := 0; j < 2+columnSizes[i]; j++ {
 			header.WriteString(minus)
 		}
